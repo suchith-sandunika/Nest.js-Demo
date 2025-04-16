@@ -1,25 +1,53 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-@Entity()
+export type UserDocument = User & Document;
+
+@Schema()
 export class User {
-    @PrimaryGeneratedColumn()
-    userId: number;
-
-    @Column()
+    @Prop({ required: true })
     firstName: string;
 
-    @Column()
+    @Prop({ required: true })
     lastName: string;
 
-    @Column()
+    @Prop({ required: true, unique: true })
     email: string;
 
-    @Column()
+    @Prop({ required: true })
     age: number;
 
-    @Column()
+    @Prop({ required: true })
     phoneNumber: string;
 
-    @Column()
+    @Prop({ required: true })
     password: string;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
+
+// import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+//
+// @Entity()
+// export class User {
+//     @PrimaryGeneratedColumn()
+//     userId: number;
+//
+//     @Column()
+//     firstName: string;
+//
+//     @Column()
+//     lastName: string;
+//
+//     @Column()
+//     email: string;
+//
+//     @Column()
+//     age: number;
+//
+//     @Column()
+//     phoneNumber: string;
+//
+//     @Column()
+//     password: string;
+// }
