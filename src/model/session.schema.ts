@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { sessionStatus } from '../constants/profileStatus';
+import { sessionStatus } from '../constants/statusStatus';
 
 export type SessionDocument = Session & Document;
 
