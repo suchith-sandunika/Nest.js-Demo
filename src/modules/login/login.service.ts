@@ -1,15 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLoginDto } from './dto/create-login.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from '../../model/user.schema';
 import { Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import { CreateLoginDto } from './dto/create-login.dto';
 import { jwtSecret } from '../../constants/constants';
+import { User } from '../../model/user.schema';
+import { Session } from '../../model/session.schema';
+// import { User, UserDocument } from '../../model/user.schema';
 
 @Injectable()
 export class LoginService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel('User') private userModel: Model<User>,
+    @InjectModel('Session') private sessionModel: Model<Session>,
+  ) {}
 
   async login(createLoginDto: CreateLoginDto): Promise<any> {
     try {
@@ -33,7 +38,12 @@ export class LoginService {
             jwtSecret,
             { expiresIn: '1d' },
           );
-          return [existingUser, token];
+          // Insert into session ...
+          return this.sessionModel.create({
+            userId: existingUser._id,
+            token: token,
+            sessionCreatedAt: new Date(),
+          });
         }
       }
     } catch (error: any) {

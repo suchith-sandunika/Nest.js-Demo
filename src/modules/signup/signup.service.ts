@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSignupDto } from './dto/create-signup.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from '../../model/user.schema';
 import { Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { User } from '../../model/user.schema';
+// import { User, UserDocument } from '../../model/user.schema';
 
 @Injectable()
 export class SignupService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel('User') private userModel: Model<User>) {}
 
   async signUp(createSignupDto: CreateSignupDto): Promise<any> {
     try {
